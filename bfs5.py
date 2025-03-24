@@ -6,21 +6,11 @@
 
 import pygame, sys
 
-maze = [
-    ['#', 'E', '#', '#', '#', '#', '#', '#', '#', '#'], #0
-    ['#', ' ', ' ', '#', '#', '#', '#', ' ', '#', '#'], #1
-    ['#', '#', ' ', '#', '#', '#', '#', ' ', '#', '#'], #2
-    ['#', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#'], #3
-    ['#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#'], #4
-    ['#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#'], #5
-    ['#', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', '#'], #6
-    ['#', '#', ' ', '#', '#', ' ', '#', '#', ' ', '#'], #7
-    ['#', '#', ' ', '#', '#', ' ', '#', '#', ' ', '#'], #8
-    ['#', '#', '#', '#', '#', '#', '#', '#', 'S', '#']  #9
-    # 0,   1,   2,   3,   4,   5,   6,   7,   8,   9   ###
-]
+file = open("maze.csv", "r")
+maze = []
+[maze.append(row.split(",")) for row in file.read().splitlines()]
 
-MAP_SIZE = 10
+MAP_SIZE = len(maze)
 TILE_SIZE = 50
 HEIGHT = MAP_SIZE * TILE_SIZE
 WIDTH = HEIGHT * 2
@@ -51,6 +41,11 @@ def searchnode(key): # Returns coords of key
             if maze[row][col] == key:
                 return (row, col)
             
+def save():
+    with open("maze.csv", "w") as file:
+        for row in maze:
+            file.write(",".join(row) + "\n")
+
 
 
 
@@ -134,11 +129,18 @@ while running:
 
     draw_map()
 
-    butt_bfs = pygame.draw.rect(screen, (0, 0, 255), (WIDTH - 100, 0, 100, 50))
+    butt_bfs = pygame.draw.rect(screen, (189, 195, 199), (WIDTH - 400, 50, 100, 50))
+    butt_save = pygame.draw.rect(screen, (95, 106, 106), (WIDTH - 400, 125, 100, 50))
 
     if butt_bfs.collidepoint(pygame.mouse.get_pos()):
         if pygame.mouse.get_pressed()[0]:
             bfs()
+
+    if butt_save.collidepoint(pygame.mouse.get_pos()):
+        if pygame.mouse.get_pressed()[0]:
+            save()
+
+        
 
     pygame.display.update()
     clock.tick(30)

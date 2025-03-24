@@ -1,7 +1,6 @@
-##visited = [[9, 9], (9, 8), (8, 9)]
-##
-##
-##print((9, 9) in visited)
+file = open("maze.csv", "r")
+maze = []
+[maze.append(row.split(",")) for row in file.read().splitlines()]
+    
 
-
-array = ['#', '#', '#', '#', '#', '#', '#', '#', 'S', '#']
+# print(maze)
